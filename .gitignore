@@ -5,3 +5,8 @@
 # React Router
 /.react-router/
 /build/
+
+# Uploaded images
+/public/uploads/*.jpg
+/public/uploads/*.jpeg
+/public/uploads/*.png
