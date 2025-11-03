@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import type { CameraCaptureProps } from "../types";
+import { Button } from "../atoms/button";
+import { ErrorAlert } from "../atoms/error-alert";
+import { VideoPreview } from "../molecules/video-preview";
+
+interface CameraCaptureProps {
+  onCapture: (imageData: string) => void;
+  onError?: (error: string) => void;
+}
 
 export function CameraCapture({ onCapture, onError }: CameraCaptureProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -29,7 +36,8 @@ export function CameraCapture({ onCapture, onError }: CameraCaptureProps) {
         setError(null);
       }
     } catch (err) {
-      const errorMessage = "カメラへのアクセスに失敗しました。カメラの使用を許可してください。";
+      const errorMessage =
+        "カメラへのアクセスに失敗しました。カメラの使用を許可してください。";
       setError(errorMessage);
       if (onError) {
         onError(errorMessage);
@@ -68,33 +76,19 @@ export function CameraCapture({ onCapture, onError }: CameraCaptureProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       {error ? (
-        <div className="w-full max-w-2xl bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          <p>{error}</p>
-        </div>
+        <ErrorAlert message={error} />
       ) : (
         <>
-          <div className="relative w-full max-w-2xl bg-black rounded-lg overflow-hidden">
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className="w-full h-auto"
-            />
-            {!isStreaming && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                <p className="text-white">カメラを起動中...</p>
-              </div>
-            )}
-          </div>
-
-          <button
+          <VideoPreview videoRef={videoRef} isStreaming={isStreaming} />
+          <Button
+            variant="primary"
+            size="lg"
             onClick={captureImage}
             disabled={!isStreaming}
-            className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-full hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+            className="rounded-full"
           >
             撮影する
-          </button>
+          </Button>
         </>
       )}
 

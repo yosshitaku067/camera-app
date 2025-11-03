@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Form, redirect, useNavigation } from "react-router";
 import type { Route } from "../../routes/+types/camera";
-import { CameraCapture } from "./components/camera-capture";
-import { ImagePreview } from "./components/image-preview";
+import { CameraCapture } from "../../components/organisms/camera-capture";
+import { ImagePreviewWithControls } from "../../components/organisms/image-preview-with-controls";
+import { Button } from "../../components/atoms/button";
+import { Heading } from "../../components/atoms/heading";
+import { Text } from "../../components/atoms/text";
 import { saveBase64Image } from "../shared/lib/storage";
 import type { CaptureState } from "./types";
 
@@ -24,7 +27,9 @@ export async function action({ request }: Route.ActionArgs) {
     saveBase64Image(image2Data, `image_${timestamp}_2.jpg`),
   ]);
 
-  console.log(`Images saved: image_${timestamp}_1.jpg, image_${timestamp}_2.jpg`);
+  console.log(
+    `Images saved: image_${timestamp}_1.jpg, image_${timestamp}_2.jpg`
+  );
 
   return redirect("/?success=true");
 }
@@ -74,21 +79,21 @@ export default function Camera() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+        <Heading level="h1" className="text-center text-gray-900 mb-8">
           カメラ撮影
-        </h1>
+        </Heading>
 
         {state.step === "capture1" && (
           <div>
-            <p className="text-center text-lg text-gray-700 mb-6">
+            <Text className="text-center text-lg text-gray-700 mb-6">
               1枚目の写真を撮影してください
-            </p>
+            </Text>
             <CameraCapture onCapture={handleCapture1} />
           </div>
         )}
 
         {state.step === "preview1" && (
-          <ImagePreview
+          <ImagePreviewWithControls
             imageData={state.image1}
             imageNumber={1}
             onRetake={handleRetake1}
@@ -98,16 +103,16 @@ export default function Camera() {
 
         {state.step === "capture2" && (
           <div>
-            <p className="text-center text-lg text-gray-700 mb-6">
+            <Text className="text-center text-lg text-gray-700 mb-6">
               2枚目の写真を撮影してください
-            </p>
+            </Text>
             <CameraCapture onCapture={handleCapture2} />
           </div>
         )}
 
         {state.step === "preview2" && (
           <div>
-            <ImagePreview
+            <ImagePreviewWithControls
               imageData={state.image2}
               imageNumber={2}
               onRetake={handleRetake2}
@@ -118,13 +123,14 @@ export default function Camera() {
               <input type="hidden" name="image1" value={state.image1} />
               <input type="hidden" name="image2" value={state.image2} />
               <div className="flex justify-center">
-                <button
+                <Button
+                  variant="primary"
+                  size="lg"
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-8 py-4 bg-blue-600 text-white text-xl font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg"
                 >
                   {isSubmitting ? "保存中..." : "2枚の写真を保存"}
-                </button>
+                </Button>
               </div>
             </Form>
           </div>

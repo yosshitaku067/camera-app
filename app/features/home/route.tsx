@@ -2,7 +2,10 @@ import type { Route } from "../../routes/+types/home";
 import { Link, useSearchParams, useNavigation } from "react-router";
 import { readdir, unlink } from "fs/promises";
 import { join } from "path";
-import { ImageHistory } from "./components/image-history";
+import { ImageHistory } from "../../components/organisms/image-history";
+import { Heading } from "../../components/atoms/heading";
+import { Text } from "../../components/atoms/text";
+import { Button } from "../../components/atoms/button";
 import type { ImageSet } from "./types";
 
 export async function loader({}: Route.LoaderArgs) {
@@ -107,12 +110,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+          <Heading level="h1" className="text-gray-900 mb-4">
             カメラアプリ
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          </Heading>
+          <Text className="text-xl text-gray-600 mb-8">
             2枚の写真を撮影して保存できます
-          </p>
+          </Text>
 
           {success && (
             <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg inline-block">
@@ -120,11 +123,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             </div>
           )}
 
-          <Link
-            to="/camera"
-            className="inline-block px-10 py-5 bg-blue-600 text-white text-2xl font-bold rounded-full hover:bg-blue-700 transition-colors shadow-xl hover:shadow-2xl transform hover:scale-105"
-          >
-            カメラを起動
+          <Link to="/camera">
+            <Button
+              variant="primary"
+              size="lg"
+              className="rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105"
+            >
+              カメラを起動
+            </Button>
           </Link>
         </div>
 
