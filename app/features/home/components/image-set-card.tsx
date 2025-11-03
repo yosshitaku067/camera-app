@@ -1,12 +1,6 @@
 import { Form } from "react-router";
 import { useState } from "react";
-
-interface ImageSetCardProps {
-  timestamp: number;
-  datetime: string;
-  images: Array<{ filename: string; url: string }>;
-  isDeleting?: boolean;
-}
+import type { ImageSetCardProps } from "../types";
 
 export function ImageSetCard({
   timestamp,

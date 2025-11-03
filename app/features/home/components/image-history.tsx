@@ -1,15 +1,5 @@
-import { ImageSetCard } from "./ImageSetCard";
-
-interface ImageSet {
-  timestamp: number;
-  datetime: string;
-  images: Array<{ filename: string; url: string }>;
-}
-
-interface ImageHistoryProps {
-  imageSets: ImageSet[];
-  isDeleting?: boolean;
-}
+import { ImageSetCard } from "./image-set-card";
+import type { ImageHistoryProps } from "../types";
 
 export function ImageHistory({
   imageSets,

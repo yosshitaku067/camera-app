@@ -1,9 +1,4 @@
-interface ImagePreviewProps {
-  imageData: string;
-  imageNumber: number;
-  onRetake: () => void;
-  onConfirm: () => void;
-}
+import type { ImagePreviewProps } from "../types";
 
 export function ImagePreview({
   imageData,
