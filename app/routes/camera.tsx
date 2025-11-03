@@ -3,8 +3,7 @@ import { Form, redirect, useNavigation } from "react-router";
 import type { Route } from "./+types/camera";
 import { CameraCapture } from "../components/CameraCapture";
 import { ImagePreview } from "../components/ImagePreview";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { saveBase64Image } from "../utils/storage";
 
 type CaptureState =
   | { step: "capture1" }
@@ -21,29 +20,18 @@ export async function action({ request }: Route.ActionArgs) {
     throw new Error("画像データが不足しています");
   }
 
-  // Ensure uploads directory exists
-  const uploadsDir = join(process.cwd(), "public", "uploads");
-  await mkdir(uploadsDir, { recursive: true });
-
   // Generate timestamp for unique filenames
   const timestamp = Date.now();
 
-  // Save images
+  // Save images using storage utility
   await Promise.all([
-    saveBase64Image(image1Data, join(uploadsDir, `image_${timestamp}_1.jpg`)),
-    saveBase64Image(image2Data, join(uploadsDir, `image_${timestamp}_2.jpg`)),
+    saveBase64Image(image1Data, `image_${timestamp}_1.jpg`),
+    saveBase64Image(image2Data, `image_${timestamp}_2.jpg`),
   ]);
 
   console.log(`Images saved: image_${timestamp}_1.jpg, image_${timestamp}_2.jpg`);
 
   return redirect("/?success=true");
-}
-
-async function saveBase64Image(base64Data: string, filepath: string) {
-  // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
-  const base64Image = base64Data.split(",")[1];
-  const buffer = Buffer.from(base64Image, "base64");
-  await writeFile(filepath, buffer);
 }
 
 export function meta({}: Route.MetaArgs) {
