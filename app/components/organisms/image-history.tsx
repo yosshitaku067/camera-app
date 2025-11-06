@@ -1,4 +1,6 @@
-import { ImageSetCard } from "./ImageSetCard";
+import { Heading } from "../atoms/heading";
+import { Text } from "../atoms/text";
+import { ImageSetCard } from "../molecules/image-set-card";
 
 interface ImageSet {
   timestamp: number;
@@ -18,17 +20,21 @@ export function ImageHistory({
   if (imageSets.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
-        <p className="text-gray-500 text-lg">まだ撮影した画像がありません</p>
-        <p className="text-gray-400 text-sm mt-2">
+        <Text className="text-gray-500 text-lg">
+          まだ撮影した画像がありません
+        </Text>
+        <Text className="text-gray-400 text-sm mt-2">
           カメラを起動して写真を撮影しましょう
-        </p>
+        </Text>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">撮影履歴</h2>
+      <Heading level="h2" className="text-gray-900 mb-4">
+        撮影履歴
+      </Heading>
       <div className="space-y-4">
         {imageSets.map((imageSet) => (
           <ImageSetCard
